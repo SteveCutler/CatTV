@@ -5,37 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     
-
     <title>CAT TV</title>
 </head>
-
 <body>
-
     <section class="video-background-section">
-
         <div class="intro">
             <h1>
                  PRESS SPACE BAR
             </h1>
         </div>
-
-        
         <header>
             <div>
                 <h2 class="logo">CAT TV</h2>
                 <a href="#"><h1 class="videoTitle">Off</h1></a>
             </div>
-            
             <div class="toggle">
-                
             </div>
         </header>
 
-        <ul class="social">
-            
+        <ul class="social">      
             <li><a href="https://twitter.com/Minotaurtech1"><img src="twitter.png" alt=""></a></li>
-            
-
         </ul>
 
         <div class="video-wrapper">
@@ -43,10 +32,8 @@
                 <video id="localVideo" src="tvstatic.mp4" autoplay loop muted width="100%" height="100%" display="none"></video>
                 <iframe id="mainVideo" src="#" width="100%" height="100%" frameborder="0" allow="autoplay; fullscreen;" allowfullscreen=""> </iframe>
             </div>
-            
         </div>
     </section>
-    
     
     <script src="https://player.vimeo.com/api/player.js"></script>
 
@@ -73,69 +60,60 @@
         '5': ['939711500','https://youtu.be/XDrB5c4-c9Y?feature=shared']
         };
 
-        window.addEventListener('keyup', event => {
-            
-            
-            if (event.code === 'Space'){
-                x++;
-                if (x > Object.keys(videoList).length) {
-                    x = 1; 
-                }
+    function handleAction() {
+        x++;
+        if (x > Object.keys(videoList).length) {
+            x = 1; 
+        }
+        newLink = videoList[x][1];
+        videoLink.href = newLink;
+        videoTitle.textContent = `Channel ${x}`;
+        newsrc = videoList[x][0];
+        switchVideoSource(newsrc);
+        intro.style.display = 'none';
+        setOpacity();
+        console.log(x);
+}
 
-                // localVideo.style.display = 'none';
-                // videoEmbed.style.display = 'block';
+window.addEventListener('keyup', event => {
+    if (event.code === 'Space') {
+        handleAction();
+    }
+});
 
-                newLink = videoList[x][1];
-                videoLink.href = newLink;
+window.addEventListener('click', handleAction);
 
-                videoTitle.textContent = `Channel ${x}`;
-                newsrc = videoList[x][0];
-                switchVideoSource(newsrc);
-                // iframe.src = `https://player.vimeo.com/video/${newsrc}?background=1&muted=0&autoplay=1`;
-                intro.style.display = 'none';
+document.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', event => {
+        // Check if the clicked link is the YouTube or Twitter link
+        
+            event.stopPropagation();
+        
+    });
+});
 
-                setOpacity();
-                console.log(x)
-            }
 
-        })
 
-        function switchVideoSource(vimeoId) {
-        // Show static video
+    function switchVideoSource(vimeoId) {
         localVideo.style.display = 'block';
         mainVideo.style.display = 'none';
-
-        // Change the source of the iframe
         mainVideo.src = `https://player.vimeo.com/video/${vimeoId}?background=1&muted=0&autoplay=1`;
-
-        // Event listener for when the main video is ready
         mainVideo.onload = () => {
             localVideo.style.display = 'none';
             mainVideo.style.display = 'block';
         };
-        }
+    }
 
-        menuToggle.addEventListener('click', () => {
-            menuToggle.classList.toggle('active')
-            showcase.classList.toggle('active')
-        })
-
-        function setOpacity(){
-            
-            clearTimeout(timeout);
-
-            showcaseHeader.style.opacity ='1';
-            social.style.opacity ='2';
-
-            timeout = setTimeout(function() {
-                showcaseHeader.style.opacity = '0';
-                social.style.opacity ='0';
-            }, 1500);
-        
-        }
-        window.addEventListener('mousemove', setOpacity)
-
-
+    function setOpacity(){
+        clearTimeout(timeout);
+        showcaseHeader.style.opacity ='1';
+        social.style.opacity ='2';
+        timeout = setTimeout(function() {
+            showcaseHeader.style.opacity = '0';
+            social.style.opacity ='0';
+        }, 1500);
+    }
+    window.addEventListener('mousemove', setOpacity)
     </script>
 </body>
 </html>
